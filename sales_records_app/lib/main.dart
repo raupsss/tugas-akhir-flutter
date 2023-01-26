@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sales_records_app/views/shared/shared.dart';
 
 import 'views/pages/about_page.dart';
 import 'views/pages/login_page.dart';
@@ -49,6 +50,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: primaryColor,
+        canvasColor: Colors.transparent,
+        // primarySwatch: Colors.cyan,
+      ),
       routeInformationParser: router.routeInformationParser,
       routerDelegate: router.routerDelegate,
       routeInformationProvider: router.routeInformationProvider,
