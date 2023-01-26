@@ -1,0 +1,26 @@
+* PROVIDER STATE MANAGEMENT
+
+link ref : https://youtube.com/playlist?list=PLZQbl9Jhl-VAg5F12Ri4lghrrLu2zfRyf
+flutter playlist : https://youtube.com/playlist?list=PLZQbl9Jhl-VACm40h5t6QMDB92WlopQmV
+
+
+- Dependencies :
+provider
+
+
+- create class shared state implement from ChangeNotifier :
+class NameSharedState with ChangeNotifier{
+	// Getter Setter
+}
+
+
+- parent widget wrapped by ChangeNotifierProvider :
+return MaterialApp(
+	home: ChangeNotifierProvider<NameSharedState>(
+		builder: (context) => NameSharedState(),
+		child: Scaffold(
+			...
+		),
+	),
+);
+
