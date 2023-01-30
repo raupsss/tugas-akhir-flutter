@@ -5,6 +5,7 @@ double defaultMargin = 24;
 Color primaryColor = const Color(0xFF285430);
 Color secondaryColor = const Color(0xFF5F8D4E);
 Color tertiaryColor = const Color(0xFFA4BE7B);
+Color containerColor = const Color(0xFF557153);
 Color blackColor = Colors.black;
 Color green200 = const Color(0xFFD6FFDE);
 Color green300 = const Color(0xFF80EB93);

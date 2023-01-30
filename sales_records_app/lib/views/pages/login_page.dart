@@ -62,7 +62,6 @@ class _LoginPageState extends State<LoginPage> {
             width: MediaQuery.of(context).size.width - 2 * defaultMargin,
             child: ElevatedButton(
               onPressed: () {
-                // context.goNamed("main_page");
                 modalLogin(context);
               },
               style: ElevatedButton.styleFrom(
@@ -279,7 +278,6 @@ class _LoginPageState extends State<LoginPage> {
                                     InkWell(
                                       onTap: () {
                                         Navigator.pop(context);
-                                        // modalMasuk(context);
                                       },
                                       child: Text(
                                         "Login",
@@ -418,6 +416,8 @@ class _LoginPageState extends State<LoginPage> {
                                     return null;
                                   },
                                   controller: inputPassword,
+                                  obscureText: true,
+                                  autocorrect: false,
                                   decoration: const InputDecoration(
                                     border: OutlineInputBorder(),
                                     labelText: 'Password',
@@ -433,11 +433,7 @@ class _LoginPageState extends State<LoginPage> {
                                   child: ElevatedButton(
                                     onPressed: () {
                                       Navigator.pop(context);
-                                      // context.goNamed("main_page");
                                       signIn();
-
-                                      // print(inputEmail.text);
-                                      // print(inputPassword.text);
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: secondaryColor,
@@ -475,7 +471,6 @@ class _LoginPageState extends State<LoginPage> {
                                     InkWell(
                                       onTap: () {
                                         Navigator.pop(context);
-                                        // modalDaftar(context);
                                       },
                                       child: Text(
                                         "Register",
