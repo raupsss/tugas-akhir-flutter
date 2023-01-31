@@ -50,7 +50,7 @@ class _AboutPageState extends State<AboutPage> {
                     onPressed: (() {
                       FirebaseAuth.instance.signOut();
                     }),
-                    child: Icon(
+                    child: const Icon(
                       Icons.logout,
                     ),
                   ),

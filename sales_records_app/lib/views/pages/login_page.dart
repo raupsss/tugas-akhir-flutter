@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sales_records_app/views/shared/shared.dart';
@@ -13,6 +15,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+  final _formKey2 = GlobalKey<FormState>();
 
   final inputName = TextEditingController();
   final inputEmail = TextEditingController();
@@ -57,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(
             height: 15,
           ),
-          Container(
+          SizedBox(
             height: 60,
             width: MediaQuery.of(context).size.width - 2 * defaultMargin,
             child: ElevatedButton(
@@ -83,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(
             height: 15,
           ),
-          Container(
+          SizedBox(
             height: 60,
             width: MediaQuery.of(context).size.width - 2 * defaultMargin,
             child: ElevatedButton(
@@ -234,7 +237,7 @@ class _LoginPageState extends State<LoginPage> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                Container(
+                                SizedBox(
                                   height: 60,
                                   width: MediaQuery.of(context).size.width -
                                       2 * defaultMargin,
@@ -278,6 +281,7 @@ class _LoginPageState extends State<LoginPage> {
                                     InkWell(
                                       onTap: () {
                                         Navigator.pop(context);
+                                        modalLogin(context);
                                       },
                                       child: Text(
                                         "Login",
@@ -329,6 +333,8 @@ class _LoginPageState extends State<LoginPage> {
 
       navigatorKey.currentState!.popUntil((route) => route.isFirst);
     }
+
+    bool passCheck = true;
 
     return showModalBottomSheet(
       context: context,
@@ -389,7 +395,7 @@ class _LoginPageState extends State<LoginPage> {
                             height: 25,
                           ),
                           Form(
-                            key: _formKey,
+                            key: _formKey2,
                             child: Column(
                               children: [
                                 TextFormField(
@@ -416,17 +422,30 @@ class _LoginPageState extends State<LoginPage> {
                                     return null;
                                   },
                                   controller: inputPassword,
-                                  obscureText: true,
+                                  obscureText: passCheck,
                                   autocorrect: false,
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
+                                  decoration: InputDecoration(
+                                    suffix: InkWell(
+                                      onTap: (() {
+                                        // print("hai");
+                                        setState(
+                                          () {
+                                            passCheck = !passCheck;
+                                          },
+                                        );
+                                      }),
+                                      child: passCheck
+                                          ? const Icon(Icons.visibility)
+                                          : const Icon(Icons.visibility_off),
+                                    ),
+                                    border: const OutlineInputBorder(),
                                     labelText: 'Password',
                                   ),
                                 ),
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                Container(
+                                SizedBox(
                                   height: 60,
                                   width: MediaQuery.of(context).size.width -
                                       2 * defaultMargin,
@@ -471,6 +490,7 @@ class _LoginPageState extends State<LoginPage> {
                                     InkWell(
                                       onTap: () {
                                         Navigator.pop(context);
+                                        modalRegister(context);
                                       },
                                       child: Text(
                                         "Register",

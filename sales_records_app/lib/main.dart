@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        brightness: Brightness.light,
         primarySwatch: ColorPalette.greenColor,
         primaryColor: secondaryColor,
         canvasColor: Colors.transparent,
