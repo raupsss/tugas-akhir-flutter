@@ -4,8 +4,8 @@ import 'package:sales_records_app/views/shared/shared.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-import 'views/pages/login_page.dart';
-import 'views/pages/home_page.dart';
+import 'views/pages/auth/login_page.dart';
+import 'views/pages/home/home_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

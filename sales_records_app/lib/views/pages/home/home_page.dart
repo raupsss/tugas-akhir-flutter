@@ -1,10 +1,11 @@
-// ignore_for_file: avoid_print, prefer_const_constructors
+// ignore_for_file: avoid_print
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:sales_records_app/views/pages/myProducts_page.dart';
+import 'package:sales_records_app/views/pages/home/chart.dart';
+import 'package:sales_records_app/views/pages/myproducts/myProducts_page.dart';
+import 'package:sales_records_app/views/pages/util/dropdown.dart';
 import 'package:sales_records_app/views/shared/shared.dart';
-import 'package:sales_records_app/views/util/history_tile.dart';
+import 'package:sales_records_app/views/pages/util/history_tile.dart';
 import 'package:calendar_appbar/calendar_appbar.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,56 +16,65 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // final List<Widget> _children = [
-  //   MainScreen(),
-  //   MyProductsPage(),
-  // ];
+  final List<Widget> _children = [
+    const MainScreen(),
+    const MyProductsPage(),
+  ];
 
-  // int currentIndex = 0;
+  int currentIndex = 0;
 
-  // void onTapped(int index) {
-  //   setState(() {
-  //     currentIndex = index;
-  //   });
-  // }
+  void onTapped(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     // final user = FirebaseAuth.instance.currentUser!;
     return Scaffold(
-      appBar: CalendarAppBar(
-        padding: 0.0,
-        backButton: false,
-        accent: primaryColor,
-        onDateChanged: (value) => print(value),
-        firstDate: DateTime.now().subtract(const Duration(days: 140)),
-        lastDate: DateTime.now(),
-      ),
+      appBar: (currentIndex == 0)
+          ? CalendarAppBar(
+              padding: 0.0,
+              backButton: false,
+              accent: primaryColor,
+              onDateChanged: (value) => print(value),
+              firstDate: DateTime.now().subtract(const Duration(days: 140)),
+              lastDate: DateTime.now(),
+            )
+          : null,
       backgroundColor: primaryColor,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: primaryColor,
-        onPressed: (() {}),
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
+      floatingActionButton: Visibility(
+        visible: (currentIndex == 0) ? true : false,
+        child: FloatingActionButton(
+          backgroundColor: primaryColor,
+          onPressed: (() {}),
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-          child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          IconButton(
-            onPressed: (() {}),
-            icon: const Icon(Icons.pending_actions),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.pending_actions),
+            label: 'Transaction',
+            tooltip: "",
           ),
-          IconButton(
-            onPressed: (() {}),
-            icon: const Icon(Icons.list),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: 'Products',
+            tooltip: "",
           ),
         ],
-      )),
-      body: MainScreen(),
+        currentIndex: currentIndex,
+        selectedItemColor: Colors.green,
+        onTap: onTapped,
+      ),
+      body: _children[currentIndex],
     );
   }
 }
@@ -151,10 +161,15 @@ class _MainScreenState extends State<MainScreen> {
                         ),
                         InkWell(
                           onTap: (() {
-                            FirebaseAuth.instance.signOut();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Chart(),
+                              ),
+                            );
                           }),
                           child: const Icon(
-                            Icons.logout,
+                            Icons.insert_chart_outlined_outlined,
                             color: Colors.white,
                           ),
                         )
@@ -171,18 +186,18 @@ class _MainScreenState extends State<MainScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "History",
-                  style: blackTextStyle.copyWith(
-                    fontSize: 20.0,
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      "History",
+                      style: blackTextStyle.copyWith(
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    const Icon(Icons.history),
+                  ],
                 ),
-                InkWell(
-                  onTap: () {
-                    // return DropdownButton(items: , onChanged: onChanged)
-                  },
-                  child: Icon(Icons.more_horiz),
-                ),
+                const DropdownWidget(iconColor: Colors.black),
               ],
             ),
             const SizedBox(
