@@ -1,9 +1,9 @@
-import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:sales_records_app/views/pages/home/chart.dart';
 import 'package:sales_records_app/views/shared/shared.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 class DropdownWidget extends StatelessWidget {
   const DropdownWidget({Key? key, required this.iconColor}) : super(key: key);
@@ -113,11 +113,16 @@ class MenuItems {
         //Do something
         break;
       case MenuItems.logout:
-        await confirm(
-          context,
-          title: const Text('Confirm !'),
-          content: const Text('Are you sure to Logout ?'),
-          textOK: TextButton(
+        await AwesomeDialog(
+          context: context,
+          dialogType: DialogType.warning,
+          headerAnimationLoop: false,
+          animType: AnimType.bottomSlide,
+          title: 'Confirm !',
+          desc: 'Are you sure to Logout ?',
+          buttonsTextStyle: const TextStyle(color: Colors.white),
+          showCloseIcon: true,
+          btnOk: TextButton(
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.red),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -136,7 +141,7 @@ class MenuItems {
               style: TextStyle(color: Colors.white),
             ),
           ),
-          textCancel: TextButton(
+          btnCancel: TextButton(
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.white),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -154,7 +159,7 @@ class MenuItems {
               style: TextStyle(color: Colors.red),
             ),
           ),
-        );
+        ).show();
         break;
     }
   }

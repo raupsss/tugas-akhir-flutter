@@ -30,16 +30,16 @@ TextStyle blackTextStyle = GoogleFonts.poppins(
 
 class ColorPalette {
   static const MaterialColor greenColor =
-      MaterialColor(0xFFA4BE7B, <int, Color>{
-    50: Color(0xFFA4BE7B),
-    100: Color(0xFFA4BE7B),
-    200: Color(0xFFA4BE7B),
-    300: Color(0xFFA4BE7B),
-    400: Color(0xFFA4BE7B),
-    500: Color(0xFFA4BE7B),
-    600: Color(0xFFA4BE7B),
-    700: Color(0xFFA4BE7B),
-    800: Color(0xFFA4BE7B),
-    900: Color(0xFFA4BE7B),
+      MaterialColor(0xFF5F8D4E, <int, Color>{
+    50: Color(0xFF5F8D4E),
+    100: Color(0xFF5F8D4E),
+    200: Color(0xFF5F8D4E),
+    300: Color(0xFF5F8D4E),
+    400: Color(0xFF5F8D4E),
+    500: Color(0xFF5F8D4E),
+    600: Color(0xFF5F8D4E),
+    700: Color(0xFF5F8D4E),
+    800: Color(0xFF5F8D4E),
+    900: Color(0xFF5F8D4E),
   });
 }

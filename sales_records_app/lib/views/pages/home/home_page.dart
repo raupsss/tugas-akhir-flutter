@@ -1,6 +1,9 @@
 // ignore_for_file: avoid_print
 
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sales_records_app/views/pages/home/chart.dart';
 import 'package:sales_records_app/views/pages/myproducts/myProducts_page.dart';
 import 'package:sales_records_app/views/pages/util/dropdown.dart';
@@ -29,9 +32,39 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  final _formKey = GlobalKey<FormState>();
+  final inputProduct = TextEditingController();
+  final inputQuantity = TextEditingController();
+  final inputDate = TextEditingController();
+
+  @override
+  void dispose() {
+    inputProduct.dispose();
+    inputQuantity.dispose();
+    inputDate.dispose();
+
+    super.dispose();
+  }
+
+  final List<String> productItems = [
+    'Bayam',
+    'Wortel',
+    'Semangka',
+    'Anggur',
+  ];
+
+  String? selectedValue;
+
+  @override
+  void initState() {
+    inputDate.text = ""; //set the initial value of text field
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // final user = FirebaseAuth.instance.currentUser!;
+    TimeOfDay _time = TimeOfDay.now();
     return Scaffold(
       appBar: (currentIndex == 0)
           ? CalendarAppBar(
@@ -48,7 +81,180 @@ class _HomePageState extends State<HomePage> {
         visible: (currentIndex == 0) ? true : false,
         child: FloatingActionButton(
           backgroundColor: primaryColor,
-          onPressed: (() {}),
+          onPressed: (() {
+            AwesomeDialog(
+              context: context,
+              showCloseIcon: true,
+              headerAnimationLoop: false,
+              dialogType: DialogType.noHeader,
+              body: Form(
+                key: _formKey,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Add Transaction",
+                        style: blackTextStyle.copyWith(
+                          fontSize: 20.0,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      DropdownButtonFormField2(
+                        decoration: InputDecoration(
+                          isDense: true,
+                          contentPadding: EdgeInsets.zero,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        isExpanded: true,
+                        hint: const Text(
+                          'Select Your Product',
+                        ),
+                        icon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.black45,
+                        ),
+                        iconSize: 30,
+                        buttonHeight: 60,
+                        dropdownDecoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.white,
+                        ),
+                        items: productItems
+                            .map((item) => DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Text(
+                                    item,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      // color: Colors.green,
+                                    ),
+                                  ),
+                                ))
+                            .toList(),
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Please select product.';
+                          }
+                        },
+                        onChanged: (value) {
+                          //Do something when changing the item if you want.
+                        },
+                        onSaved: (value) {
+                          selectedValue = value.toString();
+                        },
+                      ),
+                      // TextButton(
+                      //   onPressed: () {
+                      //     if (_formKey.currentState!.validate()) {
+                      //       _formKey.currentState!.save();
+                      //     }
+                      //   },
+                      //   child: const Text('Submit Button'),
+                      // ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        controller: inputQuantity,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Quantity cannot be empty";
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          labelText: 'Quantity',
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        controller: inputDate,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Date cannot be empty";
+                          }
+                          return null;
+                        },
+                        // controller: inputEmail,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          labelText: 'Enter Time',
+                        ),
+                        onTap: (() async {
+                          TimeOfDay? pickedTime = await showTimePicker(
+                            initialTime: TimeOfDay.now(),
+                            context: context,
+                          );
+
+                          if (pickedTime != null) {
+                            print(pickedTime.format(context)); //output 10:51 PM
+
+                            DateTime parsedTime = DateFormat.jm()
+                                .parse(pickedTime.format(context).toString());
+                            //converting to DateTime so that we can further format on different pattern.
+
+                            print(parsedTime); //output 1970-01-01 22:53:00.000
+
+                            String formattedTime =
+                                DateFormat('HH:mm').format(parsedTime);
+
+                            print(formattedTime); //output 14:59:00
+
+                            //DateFormat() is from intl package, you can format the time on any pattern you need.
+
+                            setState(() {
+                              inputDate.text =
+                                  formattedTime; //set the value of text field.
+                            });
+                          } else {
+                            print("Time is not selected");
+                          }
+                        }),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              btnOk: TextButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.green),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      side: const BorderSide(color: Colors.green),
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  // Navigator.pop(context);
+
+                  // print(formattedTimeNow);
+                  print(TimeOfDay.now());
+                  // Add Transaction
+                },
+                child: const Text(
+                  "Add",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ).show();
+          }),
           child: const Icon(
             Icons.add,
             color: Colors.white,

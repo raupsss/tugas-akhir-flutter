@@ -197,8 +197,10 @@ class _LoginPageState extends State<LoginPage> {
                                     return null;
                                   },
                                   controller: inputName,
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
                                     labelText: 'Username',
                                   ),
                                 ),
@@ -213,8 +215,10 @@ class _LoginPageState extends State<LoginPage> {
                                     return null;
                                   },
                                   controller: inputName,
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
                                     labelText: 'Email',
                                   ),
                                 ),
@@ -229,8 +233,10 @@ class _LoginPageState extends State<LoginPage> {
                                     return null;
                                   },
                                   controller: inputName,
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
                                     labelText: 'Password',
                                   ),
                                 ),
@@ -406,8 +412,10 @@ class _LoginPageState extends State<LoginPage> {
                                     return null;
                                   },
                                   controller: inputEmail,
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
                                     labelText: 'Email',
                                   ),
                                 ),
@@ -438,7 +446,9 @@ class _LoginPageState extends State<LoginPage> {
                                           ? const Icon(Icons.visibility)
                                           : const Icon(Icons.visibility_off),
                                     ),
-                                    border: const OutlineInputBorder(),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
                                     labelText: 'Password',
                                   ),
                                 ),

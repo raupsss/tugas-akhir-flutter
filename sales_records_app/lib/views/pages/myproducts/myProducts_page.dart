@@ -1,6 +1,8 @@
 // ignore_for_file: file_names
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sales_records_app/models/category_data.dart';
 import 'package:sales_records_app/views/pages/myproducts/categoryItem.dart';
 import 'package:sales_records_app/views/pages/util/dropdown.dart';
@@ -14,10 +16,11 @@ class MyProductsPage extends StatefulWidget {
 }
 
 class _MyProductsPageState extends State<MyProductsPage> {
-  // List<Widget> categoryProducts = ["Sa"]
-
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    String formattedDateNow = DateFormat('dd MMM, yyyy').format(now);
+
     return SafeArea(
       child: Column(
         children: [
@@ -39,13 +42,15 @@ class _MyProductsPageState extends State<MyProductsPage> {
                           ),
                         ),
                         Text(
-                          "08 Feb, 2023",
+                          formattedDateNow,
                           style: blackTextStyle.copyWith(
                               fontSize: 10.0, color: tertiaryColor),
                         ),
                       ],
                     ),
-                    const DropdownWidget(iconColor: Colors.white,),
+                    const DropdownWidget(
+                      iconColor: Colors.white,
+                    ),
                   ],
                 )
               ],
@@ -104,7 +109,6 @@ class _MyProductsPageState extends State<MyProductsPage> {
                                 borderRadius: BorderRadius.circular(20),
                                 color: tertiaryColor,
                               ),
-                              // color: Colors.red[100],
                               child: Center(
                                 child: Text(
                                   "${CategoryData.listCategory[index]["title"]}", // VIEW MODEL
