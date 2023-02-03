@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
         primarySwatch: ColorPalette.greenColor,
         primaryColor: secondaryColor,
-        canvasColor: Colors.transparent,
+        // canvasColor: Colors.transparent,
       ),
       home: const MainPage(),
     );

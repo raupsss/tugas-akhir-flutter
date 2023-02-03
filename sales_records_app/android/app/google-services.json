@@ -29,6 +29,13 @@
             {
               "client_id": "106873785957-nls5e33ufl698bg2s2li3a8653tj27mf.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "106873785957-3u068bc2jkuimib0s4ui3u94ki6jmm82.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.salesRecordsApp"
+              }
             }
           ]
         }

@@ -1,6 +1,7 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -18,6 +19,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+FirebaseFirestore firestore = FirebaseFirestore.instance;
+
 class _HomePageState extends State<HomePage> {
   final List<Widget> _children = [
     const MainScreen(),
@@ -33,13 +36,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  final inputProduct = TextEditingController();
+  // final inputProduct = TextEditingController();
   final inputQuantity = TextEditingController();
   final inputDate = TextEditingController();
 
   @override
   void dispose() {
-    inputProduct.dispose();
+    // inputProduct.dispose();
     inputQuantity.dispose();
     inputDate.dispose();
 
@@ -53,7 +56,7 @@ class _HomePageState extends State<HomePage> {
     'Anggur',
   ];
 
-  String? selectedValue;
+  String? inputProduct;
 
   @override
   void initState() {
@@ -64,7 +67,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     // final user = FirebaseAuth.instance.currentUser!;
-    TimeOfDay _time = TimeOfDay.now();
+
+    CollectionReference transactions = firestore.collection('transactions');
+
     return Scaffold(
       appBar: (currentIndex == 0)
           ? CalendarAppBar(
@@ -80,7 +85,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: Visibility(
         visible: (currentIndex == 0) ? true : false,
         child: FloatingActionButton(
-          backgroundColor: primaryColor,
+          backgroundColor: secondaryColor,
           onPressed: (() {
             AwesomeDialog(
               context: context,
@@ -131,21 +136,12 @@ class _HomePageState extends State<HomePage> {
                                     item,
                                     style: const TextStyle(
                                       fontSize: 14,
-                                      // color: Colors.green,
                                     ),
                                   ),
                                 ))
                             .toList(),
-                        validator: (value) {
-                          if (value == null) {
-                            return 'Please select product.';
-                          }
-                        },
                         onChanged: (value) {
-                          //Do something when changing the item if you want.
-                        },
-                        onSaved: (value) {
-                          selectedValue = value.toString();
+                          inputProduct = value.toString();
                         },
                       ),
                       // TextButton(
@@ -179,6 +175,7 @@ class _HomePageState extends State<HomePage> {
                         height: 10,
                       ),
                       TextFormField(
+                        readOnly: true,
                         controller: inputDate,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -200,7 +197,8 @@ class _HomePageState extends State<HomePage> {
                           );
 
                           if (pickedTime != null) {
-                            print(pickedTime.format(context)); //output 10:51 PM
+                            print(pickedTime.format(context)); 
+                            //output 10:51 PM
 
                             DateTime parsedTime = DateFormat.jm()
                                 .parse(pickedTime.format(context).toString());
@@ -211,7 +209,7 @@ class _HomePageState extends State<HomePage> {
                             String formattedTime =
                                 DateFormat('HH:mm').format(parsedTime);
 
-                            print(formattedTime); //output 14:59:00
+                            print(formattedTime); //output 14:59
 
                             //DateFormat() is from intl package, you can format the time on any pattern you need.
 
@@ -242,10 +240,17 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 onPressed: () {
-                  // Navigator.pop(context);
-
-                  // print(formattedTimeNow);
-                  print(TimeOfDay.now());
+                  setState(() {
+                    transactions.add({
+                      'name_product': inputProduct,
+                      'quantity': int.tryParse(inputQuantity.text) ?? 0,
+                      'enter_time': inputDate.text,
+                    });
+                    inputProduct = '';
+                    inputQuantity.text = '';
+                    inputDate.text = '';
+                    Navigator.pop(context);
+                  });
                   // Add Transaction
                 },
                 child: const Text(
@@ -297,6 +302,8 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
+    CollectionReference transactions = firestore.collection('transactions');
+
     return SafeArea(
       child: Container(
         // height: 500,
@@ -411,36 +418,42 @@ class _MainScreenState extends State<MainScreen> {
             ),
             Expanded(
               child: ListView(
-                children: const [
-                  HistoryTile(
-                    nameProduct: 'Bayam',
-                    purchaseTime: '01:22',
-                    quantity: 10,
-                    price: 2000,
-                  ),
-                  HistoryTile(
-                    nameProduct: 'Wortel',
-                    purchaseTime: '04:29',
-                    quantity: 100,
-                    price: 99000,
-                  ),
-                  HistoryTile(
-                    nameProduct: 'Apel',
-                    purchaseTime: '05:22',
-                    quantity: 110,
-                    price: 20010,
-                  ),
-                  HistoryTile(
-                    nameProduct: 'Kangkung',
-                    purchaseTime: '12:12',
-                    quantity: 10,
-                    price: 2000,
-                  ),
-                  HistoryTile(
-                    nameProduct: 'Melon',
-                    purchaseTime: '16:29',
-                    quantity: 10,
-                    price: 2000,
+                children: [
+                  StreamBuilder<QuerySnapshot>(
+                    stream: transactions
+                        .orderBy("enter_time", descending: true)
+                        .snapshots(),
+                    builder: ((context, snapshot) {
+
+                      if (snapshot.hasData) {
+                        if (snapshot.data!.docs.isNotEmpty) {
+                          return Column(
+                            children: snapshot.data!.docs
+                                .map(
+                                  (e) => HistoryTile(
+                                    nameProduct: e['name_product'],
+                                    purchaseTime: e['enter_time'],
+                                    quantity: e['quantity'],
+                                    price: 10000,
+                                  ),
+                                )
+                                .toList(),
+                          );
+                        } else {
+                          return Center(
+                            child: Text(
+                              "No Transaction History",
+                              style: blackTextStyle,
+                            ),
+                          );
+                        }
+                      } else {
+                        return Text(
+                          "No Data",
+                          style: blackTextStyle,
+                        );
+                      }
+                    }),
                   ),
                 ],
               ),

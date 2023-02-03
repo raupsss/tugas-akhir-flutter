@@ -27,15 +27,9 @@ class DefaultFirebaseOptions {
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for linux - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return linux;
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not supported for this platform.',
@@ -78,5 +72,23 @@ class DefaultFirebaseOptions {
     storageBucket: 'salesrecords-93168.appspot.com',
     iosClientId: '106873785957-3u068bc2jkuimib0s4ui3u94ki6jmm82.apps.googleusercontent.com',
     iosBundleId: 'com.example.salesRecordsApp',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyB7JZkOVO82ShDEUAEy9wSLORuzjNrBWwY',
+    appId: '1:106873785957:web:ed4b926f634b8ea786408c',
+    messagingSenderId: '106873785957',
+    projectId: 'salesrecords-93168',
+    authDomain: 'salesrecords-93168.firebaseapp.com',
+    storageBucket: 'salesrecords-93168.appspot.com',
+  );
+
+  static const FirebaseOptions linux = FirebaseOptions(
+    apiKey: 'AIzaSyB7JZkOVO82ShDEUAEy9wSLORuzjNrBWwY',
+    appId: '1:106873785957:web:4fc585520aff6e0f86408c',
+    messagingSenderId: '106873785957',
+    projectId: 'salesrecords-93168',
+    authDomain: 'salesrecords-93168.firebaseapp.com',
+    storageBucket: 'salesrecords-93168.appspot.com',
   );
 }

@@ -42,8 +42,8 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
         children: [
           Image.asset(
-            "assets/images/logo1.jpg",
-            height: 300,
+            "assets/images/logo1-removebg.png",
+            height: 350,
             fit: BoxFit.fill,
           ),
           const SizedBox(
